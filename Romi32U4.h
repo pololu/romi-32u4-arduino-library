@@ -19,7 +19,6 @@
 #include <Romi32U4Buttons.h>
 #include <Romi32U4Buzzer.h>
 #include <Romi32U4Encoders.h>
-#include <Romi32U4IRPulses.h>
 #include <Romi32U4LCD.h>
 #include <Romi32U4Motors.h>
 
