@@ -1,5 +1,5 @@
 # Doxygen configuration file for generating documentation.
-PROJECT_NAME = "Zumo32U4 library"
+PROJECT_NAME = "Romi32U4 library"
 OUTPUT_DIRECTORY = docs
 INLINE_INHERITED_MEMB = YES
 INPUT = .
