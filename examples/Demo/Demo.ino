@@ -342,6 +342,10 @@ void inertialDemo()
   }
 }
 
+// Print the raw readings from the X and Y axes on the
+// magnetometer.  (The magnetometer also has a Z axis which we do
+// not display because it would not fit and is less likely to be
+// useful.)
 void magnetometerDemo()
 {
   displayBackArrow();
