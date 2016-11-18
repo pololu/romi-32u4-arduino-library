@@ -69,7 +69,10 @@ inline bool usbPowerPresent()
     return USBSTA >> VBUS & 1;
 }
 
-/*! \brief Reads the battery voltage and returns it in millivolts. */
+/*! \brief Reads the battery voltage and returns it in millivolts.
+
+If this function returns a number below 5500, the actual battery voltage might
+be significantly lower than the value returned. */
 inline uint16_t readBatteryMillivolts()
 {
     const uint8_t sampleCount = 8;
