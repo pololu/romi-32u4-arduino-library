@@ -26,7 +26,7 @@ static volatile uint16_t countRight;
 ISR(PCINT0_vect)
 {
     bool newLeftB = FastGPIO::Pin<LEFT_B>::isInputHigh();
-    bool newLeftA = FastGPIO::Pin<LEFT_XOR>::isInputHigh() ^ newLeftB;
+    bool newLeftA = FastGPIO::Pin<LEFT_XOR>::isInputHigh() ^ newLeftB ^ 1;
 
     countLeft += (newLeftA ^ lastLeftB) - (lastLeftA ^ newLeftB);
 
@@ -42,7 +42,7 @@ ISR(PCINT0_vect)
 static void rightISR()
 {
     bool newRightB = FastGPIO::Pin<RIGHT_B>::isInputHigh();
-    bool newRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ newRightB;
+    bool newRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ newRightB ^ 1;
 
     countRight += (newRightA ^ lastRightB) - (lastRightA ^ newRightB);
 
@@ -78,12 +78,12 @@ void Romi32U4Encoders::init2()
     // interrupts in case the interrupts fired by accident as we were enabling
     // them.
     lastLeftB = FastGPIO::Pin<LEFT_B>::isInputHigh();
-    lastLeftA = FastGPIO::Pin<LEFT_XOR>::isInputHigh() ^ lastLeftB;
+    lastLeftA = FastGPIO::Pin<LEFT_XOR>::isInputHigh() ^ lastLeftB ^ 1;
     countLeft = 0;
     errorLeft = 0;
 
     lastRightB = FastGPIO::Pin<RIGHT_B>::isInputHigh();
-    lastRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ lastRightB;
+    lastRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ lastRightB ^ 1;
     countRight = 0;
     errorRight = 0;
 }
