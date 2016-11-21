@@ -26,9 +26,9 @@ static volatile uint16_t countRight;
 ISR(PCINT0_vect)
 {
     bool newLeftB = FastGPIO::Pin<LEFT_B>::isInputHigh();
-    bool newLeftA = FastGPIO::Pin<LEFT_XOR>::isInputHigh() ^ newLeftB ^ 1;
+    bool newLeftA = FastGPIO::Pin<LEFT_XOR>::isInputHigh() ^ newLeftB;
 
-    countLeft += (newLeftA ^ lastLeftB) - (lastLeftA ^ newLeftB);
+    countLeft += (lastLeftA ^ newLeftB) - (newLeftA ^ lastLeftB);
 
     if((lastLeftA ^ newLeftA) & (lastLeftB ^ newLeftB))
     {
@@ -42,9 +42,9 @@ ISR(PCINT0_vect)
 static void rightISR()
 {
     bool newRightB = FastGPIO::Pin<RIGHT_B>::isInputHigh();
-    bool newRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ newRightB ^ 1;
+    bool newRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ newRightB;
 
-    countRight += (newRightA ^ lastRightB) - (lastRightA ^ newRightB);
+    countRight += (lastRightA ^ newRightB) - (newRightA ^ lastRightB);
 
     if((lastRightA ^ newRightA) & (lastRightB ^ newRightB))
     {
