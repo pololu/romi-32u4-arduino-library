@@ -21,7 +21,13 @@
  * To read the right encoder, this class calls
  * [attachInterrupt()](http://arduino.cc/en/Reference/attachInterrupt), so there
  * will be a compile-time conflict with any other code that defines an ISR for
- * an external interrupt directly instead of using attachInterrupt(). */
+ * an external interrupt directly instead of using attachInterrupt().
+ *
+ * The standard Romi motors have a gear ratio of 3952:33 (approximately 120:1).
+ * The standard Romi encoders give 12 counts per revolution.  Therefore, one
+ * revolution of a Romi wheel corresponds to 12*3952/33 (approximately 1437.09)
+ * encoder counts as returned by this library.
+ */
 class Romi32U4Encoders
 {
 
