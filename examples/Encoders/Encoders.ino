@@ -106,11 +106,11 @@ void loop()
 
   if (buttonA.isPressed())
   {
-    motors.setSpeeds(400, 400);
+    motors.setSpeeds(100, 100);
   }
   else if (buttonC.isPressed())
   {
-    motors.setSpeeds(-400, -400);
+    motors.setSpeeds(-100, -100);
   }
   else
   {
