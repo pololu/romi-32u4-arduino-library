@@ -6,10 +6,20 @@ several different demos.
 
 To use this demo program, you will need to have the LCD connected
 to the Romi 32U4.  If you cannot see any text on the LCD,
-try rotating the contrast potentiometer. */
+try rotating the contrast potentiometer.
+
+To compile this demo program, you will need to install the LSM6
+and LIS3MDL libraries:
+
+https://github.com/pololu/lsm6-arduino
+https://github.com/pololu/lis3mdl-arduino
+
+*/
 
 #include <Wire.h>
 #include <Romi32U4.h>
+#include <LSM6.h>
+#include <LIS3MDL.h>
 
 Romi32U4LCD lcd;
 Romi32U4Buzzer buzzer;
