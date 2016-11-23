@@ -47,7 +47,5 @@ copylib https://github.com/pololu/usb-pause-arduino ../usb-pause-arduino USBPaus
 copylib https://github.com/pololu/pushbutton-arduino ../pushbutton-arduino Pushbutton{.cpp,.h}
 copylib https://github.com/pololu/pololu-buzzer-arduino ../pololu-buzzer-arduino/PololuBuzzer PololuBuzzer{.cpp,.h}
 copylib https://github.com/pololu/pololu-hd44780-arduino ../pololu-hd44780-arduino PololuHD44780{.cpp,.h}
-copylib https://github.com/pololu/lsm6-arduino ../lsm6-arduino LSM6{.cpp,.h}
-copylib https://github.com/pololu/lis3mdl-arduino ../lis3mdl-arduino LIS3MDL{.cpp,.h}
 
 
