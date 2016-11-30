@@ -1,20 +1,18 @@
-/* This demo program shows many features of the Romi 32U4.
-
-It uses the buttons, LCD, and buzzer to provide a user interface.
-It presents a menu to the user that lets the user select from
-several different demos.
-
-To use this demo program, you will need to have the LCD connected
-to the Romi 32U4.  If you cannot see any text on the LCD,
-try rotating the contrast potentiometer.
-
-To compile this demo program, you will need to install the LSM6
-and LIS3MDL libraries:
-
-https://github.com/pololu/lsm6-arduino
-https://github.com/pololu/lis3mdl-arduino
-
-*/
+// This demo program shows many features of the Romi 32U4.
+//
+// It uses the buttons, LCD, and buzzer to provide a user
+// interface.  It presents a menu to the user that lets the user
+// select from several different demos.
+//
+// To use this demo program, you will need to have the LCD
+// connected to the Romi 32U4.  If you cannot see any text on the
+// LCD, try rotating the contrast potentiometer.
+//
+// To compile this demo program, you will need to install the
+// LSM6 and LIS3MDL libraries:
+//
+// https://github.com/pololu/lsm6-arduino
+// https://github.com/pololu/lis3mdl-arduino
 
 #include <Wire.h>
 #include <Romi32U4.h>
@@ -33,6 +31,146 @@ Romi32U4Encoders encoders;
 
 char buttonMonitor();
 
+// A couple of simple tunes, stored in program space.
+const char beepBrownout[] PROGMEM = "<c32<e32#<g32";
+const char beepWelcome[] PROGMEM = ">g32>>c32";
+const char beepThankYou[] PROGMEM = ">>c32>g32";
+const char beepButtonA[] PROGMEM = "!c32";
+const char beepButtonB[] PROGMEM = "!e32";
+const char beepButtonC[] PROGMEM = "!g32";
+
+// A longer song and its title.
+const char fugue[] PROGMEM =
+  "! T120O5L16agafaea dac+adaea fa<aa<bac#a dac#adaea f"
+  "O6dcd<b-d<ad<g d<f+d<gd<ad<b- d<dd<ed<f+d<g d<f+d<gd<ad"
+  "L8MS<b-d<b-d MLe-<ge-<g MSc<ac<a MLd<fd<f O5MSb-gb-g"
+  "ML>c#e>c#e MS afaf ML gc#gc# MS fdfd ML e<b-e<b-"
+  "O6L16ragafaea dac#adaea fa<aa<bac#a dac#adaea faeadaca"
+  "<b-acadg<b-g egdgcg<b-g <ag<b-gcf<af dfcf<b-f<af"
+  "<gf<af<b-e<ge c#e<b-e<ae<ge <fe<ge<ad<fd"
+  "O5e>ee>ef>df>d b->c#b->c#a>df>d e>ee>ef>df>d"
+  "e>d>c#>db>d>c#b >c#agaegfe fO6dc#dfdc#<b c#4";
+
+const char fugueTitle[] PROGMEM =
+  "       Fugue in D Minor - by J.S. Bach       ";
+
+// This LCD custom character is a back arrow.
+const char backArrow[] PROGMEM = {
+  0b00000,
+  0b00010,
+  0b00001,
+  0b00101,
+  0b01001,
+  0b11110,
+  0b01000,
+  0b00100,
+};
+
+// This LCD custom character is two chevrons pointing up.
+const char forwardArrows[] PROGMEM = {
+  0b00000,
+  0b00100,
+  0b01010,
+  0b10001,
+  0b00100,
+  0b01010,
+  0b10001,
+  0b00000,
+};
+
+// This LCD custom character is two chevrons pointing down.
+const char reverseArrows[] PROGMEM = {
+  0b00000,
+  0b10001,
+  0b01010,
+  0b00100,
+  0b10001,
+  0b01010,
+  0b00100,
+  0b00000,
+};
+
+// This LCD custom character is two solid arrows pointing up.
+const char forwardArrowsSolid[] PROGMEM = {
+  0b00000,
+  0b00100,
+  0b01110,
+  0b11111,
+  0b00100,
+  0b01110,
+  0b11111,
+  0b00000,
+};
+
+// This LCD custom character is two solid arrows pointing down.
+const char reverseArrowsSolid[] PROGMEM = {
+  0b00000,
+  0b11111,
+  0b01110,
+  0b00100,
+  0b11111,
+  0b01110,
+  0b00100,
+  0b00000,
+};
+
+void loadCustomCharacters()
+{
+  // The LCD supports up to 8 custom characters.  Each character
+  // has a number between 0 and 7.  We assign #7 to be the back
+  // arrow; other characters are loaded by individual demos as
+  // needed.
+
+  lcd.loadCustomCharacter(backArrow, 7);
+}
+
+// Assigns #0-6 to be bar graph characters.
+void loadCustomCharactersBarGraph()
+{
+  static const char levels[] PROGMEM = {
+    0, 0, 0, 0, 0, 0, 0, 63, 63, 63, 63, 63, 63, 63
+  };
+  lcd.loadCustomCharacter(levels + 0, 0);  // 1 bar
+  lcd.loadCustomCharacter(levels + 1, 1);  // 2 bars
+  lcd.loadCustomCharacter(levels + 2, 2);  // 3 bars
+  lcd.loadCustomCharacter(levels + 3, 3);  // 4 bars
+  lcd.loadCustomCharacter(levels + 4, 4);  // 5 bars
+  lcd.loadCustomCharacter(levels + 5, 5);  // 6 bars
+  lcd.loadCustomCharacter(levels + 6, 6);  // 7 bars
+}
+
+// Assigns #0-4 to be arrow symbols.
+void loadCustomCharactersMotorDirs()
+{
+  lcd.loadCustomCharacter(forwardArrows, 0);
+  lcd.loadCustomCharacter(reverseArrows, 1);
+  lcd.loadCustomCharacter(forwardArrowsSolid, 2);
+  lcd.loadCustomCharacter(reverseArrowsSolid, 3);
+}
+
+// Clears the LCD and puts [back_arrow]B on the second line
+// to indicate to the user that the B button goes back.
+void displayBackArrow()
+{
+  lcd.clear();
+  lcd.gotoXY(0,1);
+  lcd.print(F("\7B"));
+  lcd.gotoXY(0,0);
+}
+
+// Prints a bar graph character on the LCD using the custom
+// characters provided by loadCustomCharacterBarGraph and some
+// special characters supported by the HD44780.
+void printBar(uint8_t height)
+{
+  if (height > 8) { height = 8; }
+  static const char barChars[] = {' ', 0, 1, 2, 3, 4, 5, 6, 255};
+  lcd.print(barChars[height]);
+}
+
+// The Menu class shows an interactive menu on the screen that
+// lets a user select an action and keeps track of the menu's
+// state.
 class Menu
 {
 public:
@@ -54,7 +192,11 @@ public:
     lcd.clear();
     lcd.print(items[index].name);
     lcd.gotoXY(0, 1);
-    lcd.print(F("\x7f" "A \xa5" "B C\x7e"));
+
+    // The string below uses special characters from the HD44780
+    // interface datasheet.  "\x7f" is a left arrow.
+    // "\xa5" is a dot character.  "\x7e" is a right arrow.
+    lcd.print(F("\x7fA \xa5" "B C\x7e"));
   }
 
   void action(uint8_t index)
@@ -113,120 +255,6 @@ private:
 };
 
 
-// A couple of simple tunes, stored in program space.
-const char beepBrownout[] PROGMEM = "<c32<e32#<g32";
-const char beepWelcome[] PROGMEM = ">g32>>c32";
-const char beepThankYou[] PROGMEM = ">>c32>g32";
-const char beepButtonA[] PROGMEM = "!c32";
-const char beepButtonB[] PROGMEM = "!e32";
-const char beepButtonC[] PROGMEM = "!g32";
-
-// Custom characters for the LCD:
-
-// This character is a back arrow.
-const char backArrow[] PROGMEM = {
-  0b00000,
-  0b00010,
-  0b00001,
-  0b00101,
-  0b01001,
-  0b11110,
-  0b01000,
-  0b00100,
-};
-
-// This character is two chevrons pointing up.
-const char forwardArrows[] PROGMEM = {
-  0b00000,
-  0b00100,
-  0b01010,
-  0b10001,
-  0b00100,
-  0b01010,
-  0b10001,
-  0b00000,
-};
-
-// This character is two chevrons pointing down.
-const char reverseArrows[] PROGMEM = {
-  0b00000,
-  0b10001,
-  0b01010,
-  0b00100,
-  0b10001,
-  0b01010,
-  0b00100,
-  0b00000,
-};
-
-// This character is two solid arrows pointing up.
-const char forwardArrowsSolid[] PROGMEM = {
-  0b00000,
-  0b00100,
-  0b01110,
-  0b11111,
-  0b00100,
-  0b01110,
-  0b11111,
-  0b00000,
-};
-
-// This character is two solid arrows pointing down.
-const char reverseArrowsSolid[] PROGMEM = {
-  0b00000,
-  0b11111,
-  0b01110,
-  0b00100,
-  0b11111,
-  0b01110,
-  0b00100,
-  0b00000,
-};
-
-void loadCustomCharacters()
-{
-  // The LCD supports up to 8 custom characters.  Each character
-  // has a number between 0 and 7.  We assign #7 to be the back
-  // arrow; other characters are loaded by individual demos as
-  // needed.
-
-  lcd.loadCustomCharacter(backArrow, 7);
-}
-
-// Assigns #0-6 to be bar graph characters.
-void loadCustomCharactersBarGraph()
-{
-  static const char levels[] PROGMEM = {
-    0, 0, 0, 0, 0, 0, 0, 63, 63, 63, 63, 63, 63, 63
-  };
-  lcd.loadCustomCharacter(levels + 0, 0);  // 1 bar
-  lcd.loadCustomCharacter(levels + 1, 1);  // 2 bars
-  lcd.loadCustomCharacter(levels + 2, 2);  // 3 bars
-  lcd.loadCustomCharacter(levels + 3, 3);  // 4 bars
-  lcd.loadCustomCharacter(levels + 4, 4);  // 5 bars
-  lcd.loadCustomCharacter(levels + 5, 5);  // 6 bars
-  lcd.loadCustomCharacter(levels + 6, 6);  // 7 bars
-}
-
-// Assigns #0-4 to be arrow symbols.
-void loadCustomCharactersMotorDirs()
-{
-  lcd.loadCustomCharacter(forwardArrows, 0);
-  lcd.loadCustomCharacter(reverseArrows, 1);
-  lcd.loadCustomCharacter(forwardArrowsSolid, 2);
-  lcd.loadCustomCharacter(reverseArrowsSolid, 3);
-}
-
-// Clears the LCD and puts [back_arrow]B on the second line
-// to indicate to the user that the B button goes back.
-void displayBackArrow()
-{
-  lcd.clear();
-  lcd.gotoXY(0,1);
-  lcd.print(F("\7B"));
-  lcd.gotoXY(0,0);
-}
-
 // Blinks all three LEDs in sequence.
 void ledDemo()
 {
@@ -277,13 +305,6 @@ void ledDemo()
   ledRed(0);
   ledYellow(0);
   ledGreen(0);
-}
-
-void printBar(uint8_t height)
-{
-  if (height > 8) { height = 8; }
-  static const char barChars[] = {' ', 0, 1, 2, 3, 4, 5, 6, 255};
-  lcd.print(barChars[height]);
 }
 
 // Starts I2C and initializes the inertial sensors.
@@ -487,7 +508,7 @@ void motorDemoHelper(bool showEncoders)
         rightSpeed -= 30;
       }
 
-      leftSpeed = constrain(leftSpeed, 0, 400);
+      leftSpeed = constrain(leftSpeed, 0, 400);   // TODO: adjust the code around here because 400 is not a good max speed for these motors
       rightSpeed = constrain(rightSpeed, 0, 400);
 
       motors.setSpeeds(leftSpeed * leftDir, rightSpeed * rightDir);
@@ -529,20 +550,6 @@ void encoderDemo()
 {
   motorDemoHelper(true);
 }
-
-const char fugue[] PROGMEM =
-  "! T120O5L16agafaea dac+adaea fa<aa<bac#a dac#adaea f"
-  "O6dcd<b-d<ad<g d<f+d<gd<ad<b- d<dd<ed<f+d<g d<f+d<gd<ad"
-  "L8MS<b-d<b-d MLe-<ge-<g MSc<ac<a MLd<fd<f O5MSb-gb-g"
-  "ML>c#e>c#e MS afaf ML gc#gc# MS fdfd ML e<b-e<b-"
-  "O6L16ragafaea dac#adaea fa<aa<bac#a dac#adaea faeadaca"
-  "<b-acadg<b-g egdgcg<b-g <ag<b-gcf<af dfcf<b-f<af"
-  "<gf<af<b-e<ge c#e<b-e<ae<ge <fe<ge<ad<fd"
-  "O5e>ee>ef>df>d b->c#b->c#a>df>d e>ee>ef>df>d"
-  "e>d>c#>db>d>c#b >c#agaegfe fO6dc#dfdc#<b c#4";
-
-const char fugueTitle[] PROGMEM =
-  "       Fugue in D Minor - by J.S. Bach       ";
 
 // Play a song on the buzzer and display its title.
 void musicDemo()
