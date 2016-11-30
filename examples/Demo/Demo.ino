@@ -455,11 +455,11 @@ void motorDemoHelper(bool showEncoders)
         // Cycle the instructions every 2 seconds.
         if (instructCount == 0)
         {
-          lcd.print("Hold=run");
+          lcd.print(F("Hold=run"));
         }
         else if (instructCount == 40)
         {
-          lcd.print("Tap=flip");
+          lcd.print(F("Tap=flip"));
         }
         if (++instructCount == 80) { instructCount = 0; }
       }
