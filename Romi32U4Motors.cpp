@@ -9,8 +9,10 @@
 #define DIR_L 16
 #define DIR_R 15
 
-static bool flipLeft = false;
-static bool flipRight = false;
+static bool Romi32U4Motors::flipLeft = false;
+static bool Romi32U4Motors::flipRight = false;
+
+static uint16_t Romi32U4Motors::maxSpeed = 300;
 
 // initialize timer1 to generate the proper PWM outputs to the motor drivers
 void Romi32U4Motors::init2()
@@ -35,19 +37,16 @@ void Romi32U4Motors::init2()
     OCR1B = 0;
 }
 
-// enable/disable flipping of left motor
 void Romi32U4Motors::flipLeftMotor(bool flip)
 {
     flipLeft = flip;
 }
 
-// enable/disable flipping of right motor
 void Romi32U4Motors::flipRightMotor(bool flip)
 {
     flipRight = flip;
 }
 
-// set speed for left motor; speed is a number between -400 and 400
 void Romi32U4Motors::setLeftSpeed(int16_t speed)
 {
     init();
@@ -59,9 +58,9 @@ void Romi32U4Motors::setLeftSpeed(int16_t speed)
         speed = -speed; // Make speed a positive quantity.
         reverse = 1;    // Preserve the direction.
     }
-    if (speed > 400)    // Max PWM duty cycle.
+    if (speed > maxSpeed)
     {
-        speed = 400;
+        speed = maxSpeed;
     }
 
     OCR1B = speed;
@@ -69,7 +68,6 @@ void Romi32U4Motors::setLeftSpeed(int16_t speed)
     FastGPIO::Pin<DIR_L>::setOutput(reverse ^ flipLeft);
 }
 
-// set speed for right motor; speed is a number between -400 and 400
 void Romi32U4Motors::setRightSpeed(int16_t speed)
 {
     init();
@@ -81,9 +79,9 @@ void Romi32U4Motors::setRightSpeed(int16_t speed)
         speed = -speed;  // Make speed a positive quantity.
         reverse = 1;     // Preserve the direction.
     }
-    if (speed > 400)     // Max PWM duty cycle.
+    if (speed > maxSpeed)
     {
-        speed = 400;
+        speed = maxSpeed;
     }
 
     OCR1A = speed;
@@ -91,9 +89,13 @@ void Romi32U4Motors::setRightSpeed(int16_t speed)
     FastGPIO::Pin<DIR_R>::setOutput(reverse ^ flipRight);
 }
 
-// set speed for both motors
 void Romi32U4Motors::setSpeeds(int16_t leftSpeed, int16_t rightSpeed)
 {
-  setLeftSpeed(leftSpeed);
-  setRightSpeed(rightSpeed);
+    setLeftSpeed(leftSpeed);
+    setRightSpeed(rightSpeed);
+}
+
+void Romi32U4Motors::allowTurbo(bool turbo)
+{
+    maxSpeed = turbo ? 400 : 300;
 }

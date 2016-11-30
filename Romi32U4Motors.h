@@ -41,27 +41,42 @@ class Romi32U4Motors
 
     /** \brief Sets the speed for the left motor.
      *
-     * \param speed A number from -400 to 400 representing the speed and
-     * direction of the left motor.  Values of -400 or less result in full speed
-     * reverse, and values of 400 or more result in full speed forward. */
+     * \param speed A number from -300 to 300 representing the speed and
+     * direction of the left motor.  Values of -300 or less result in full speed
+     * reverse, and values of 300 or more result in full speed forward. */
     static void setLeftSpeed(int16_t speed);
 
     /** \brief Sets the speed for the left motor.
      *
-     * \param speed A number from -400 to 400 representing the speed and
-     * direction of the right motor. Values of -400 or less result in full speed
-     * reverse, and values of 400 or more result in full speed forward. */
+     * \param speed A number from -300 to 300 representing the speed and
+     * direction of the right motor. Values of -300 or less result in full speed
+     * reverse, and values of 300 or more result in full speed forward. */
     static void setRightSpeed(int16_t speed);
 
     /** \brief Sets the speed for the left motor.
      *
-     * \param leftSpeed A number from -400 to 400 representing the speed and
-     * direction of the right motor. Values of -400 or less result in full speed
-     * reverse, and values of 400 or more result in full speed forward.
-     * \param rightSpeed A number from -400 to 400 representing the speed and
-     * direction of the right motor. Values of -400 or less result in full speed
-     * reverse, and values of 400 or more result in full speed forward. */
+     * \param leftSpeed A number from -300 to 300 representing the speed and
+     * direction of the right motor. Values of -300 or less result in full speed
+     * reverse, and values of 300 or more result in full speed forward.
+     * \param rightSpeed A number from -300 to 300 representing the speed and
+     * direction of the right motor. Values of -300 or less result in full speed
+     * reverse, and values of 300 or more result in full speed forward. */
     static void setSpeeds(int16_t leftSpeed, int16_t rightSpeed);
+
+    /** \brief Turns turbo mode on or off.
+     *
+     * By default turbo mode is off.  When turbo mode is on, the range of speeds
+     * accepted by the other functions in this library becomes -400 to 400
+     * (instead of -300 to 300).  Turning turbo mode on allows the Romi to move
+     * faster but could decrease the lifetime of the motors.
+     *
+     * This function does not have any immediate effect on the speed of the
+     * motors; it just changes the behavior of the other functions in this
+     * library.
+     *
+     * \param turbo If true, turns turbo mode on.
+     *   If false turns turbo mode off. */
+    static void allowTurbo(bool turbo);
 
   private:
 
@@ -77,4 +92,8 @@ class Romi32U4Motors
     }
 
     static void init2();
+
+    static uint16_t maxSpeed;
+    static bool flipLeft;
+    static bool flipRight;
 };

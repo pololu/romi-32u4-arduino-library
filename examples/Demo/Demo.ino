@@ -196,7 +196,7 @@ public:
     // The string below uses special characters from the HD44780
     // interface datasheet.  "\x7f" is a left arrow.
     // "\xa5" is a dot character.  "\x7e" is a right arrow.
-    lcd.print(F("\x7fA \xa5" "B C\x7e"));
+    lcd.print(F("\x7f" "A \xa5" "B C\x7e"));
   }
 
   void action(uint8_t index)
@@ -412,6 +412,13 @@ void motorDemoHelper(bool showEncoders)
   lcd.gotoXY(1, 1);
   lcd.print(F("A \7B C"));
 
+  const uint16_t maxSpeed = 300;
+  const uint8_t acceleration = 15;
+  const uint8_t deceleration = 30;
+
+  // Update the LCD and motors every 50 ms.
+  const uint8_t updatePeriod = 50;
+
   int16_t leftSpeed = 0, rightSpeed = 0;
   int8_t leftDir = 1, rightDir = 1;
   uint16_t lastUpdateTime = millis() - 100;
@@ -430,8 +437,7 @@ void motorDemoHelper(bool showEncoders)
     if (encCountsRight < 0) { encCountsRight += 1000; }
     if (encCountsRight > 999) { encCountsRight -= 1000; }
 
-    // Update the LCD and motors every 50 ms.
-    if ((uint16_t)(millis() - lastUpdateTime) > 50)
+    if ((uint16_t)(millis() - lastUpdateTime) > updatePeriod)
     {
       lastUpdateTime = millis();
 
@@ -468,7 +474,7 @@ void motorDemoHelper(bool showEncoders)
         {
           // Button has been held for more than 200 ms, so
           // start running the motor.
-          leftSpeed += 15;
+          leftSpeed += acceleration;
         }
       }
       else
@@ -480,7 +486,7 @@ void motorDemoHelper(bool showEncoders)
           leftDir = -leftDir;
         }
         btnCountA = 0;
-        leftSpeed -= 30;
+        leftSpeed -= deceleration;
       }
 
       if (buttonC.isPressed())
@@ -493,7 +499,7 @@ void motorDemoHelper(bool showEncoders)
         {
           // Button has been held for more than 200 ms, so
           // start running the motor.
-          rightSpeed += 15;
+          rightSpeed += acceleration;
         }
       }
       else
@@ -505,11 +511,11 @@ void motorDemoHelper(bool showEncoders)
           rightDir = -rightDir;
         }
         btnCountC = 0;
-        rightSpeed -= 30;
+        rightSpeed -= deceleration;
       }
 
-      leftSpeed = constrain(leftSpeed, 0, 400);   // TODO: adjust the code around here because 400 is not a good max speed for these motors
-      rightSpeed = constrain(rightSpeed, 0, 400);
+      leftSpeed = constrain(leftSpeed, 0, maxSpeed);
+      rightSpeed = constrain(rightSpeed, 0, maxSpeed);
 
       motors.setSpeeds(leftSpeed * leftDir, rightSpeed * rightDir);
 
