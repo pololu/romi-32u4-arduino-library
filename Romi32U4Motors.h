@@ -2,8 +2,6 @@
 
 /*! \file Romi32U4Motors.h */
 
-// TODO: add velocity limiting to prevent damage to motors
-
 #pragma once
 
 #include <stdint.h>
