@@ -73,7 +73,7 @@ class Romi32U4Motors
      * library.
      *
      * \param turbo If true, turns turbo mode on.
-     *   If false turns turbo mode off. */
+     *   If false, turns turbo mode off. */
     static void allowTurbo(bool turbo);
 
   private:
