@@ -46,7 +46,7 @@ void setup()
 void loop()
 {
   // Read the acceleration from the LSM303.
-  // A value of 16393 corresponds to approximately 1 g.
+  // A value of 16384 corresponds to approximately 1 g.
   lsm6.read();
   int16_t x = lsm6.a.x;
   int16_t y = lsm6.a.y;
@@ -74,9 +74,9 @@ void loop()
   forwardSpeed = constrain(forwardSpeed, -maxSpeed, maxSpeed);
 
   // See if we are actually on an incline.
-  // 16393 * sin(5 deg) = 1428
+  // 16384 * sin(5 deg) = 1427
   int16_t turnSpeed;
-  if (magnitudeSquared > (int32_t)1428 * 1428)
+  if (magnitudeSquared > (int32_t)1427 * 1427)
   {
     // We are on an incline of more than 5 degrees, so
     // try to face uphill using a feedback algorithm.
