@@ -8,8 +8,8 @@
 // connected to the Romi 32U4.  If you cannot see any text on the
 // LCD, try rotating the contrast potentiometer.
 //
-// To compile this demo program, you will need to install the
-// LSM6 and LIS3MDL libraries:
+// To run this sketch, you will need to install the LSM6 and
+// LIS3MDL libraries:
 //
 // https://github.com/pololu/lsm6-arduino
 // https://github.com/pololu/lis3mdl-arduino
