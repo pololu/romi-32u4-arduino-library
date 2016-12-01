@@ -1,9 +1,6 @@
 // This example reads the raw values from the LSM6DS33
 // accelerometer and gyro and and the LIS3MDL magnetometer on the
-// Romi 32U4, and sends those raw values to the computer.  To
-// view the raw numbers, you can use the Arduino IDE's Serial
-// Monitor.  To view a graph of the numbers, you can use the
-// Arduino IDE's Serial Plotter
+// Romi 32U4, and prints those raw values to the serial monitor.
 //
 // The accelerometer readings can be converted to units of g using
 // the conversion factors specified in the "Mechanical characteristics"
@@ -74,7 +71,7 @@ void loop()
   lis3mdl.read();
 
   snprintf_P(report, sizeof(report),
-    PSTR("%6d %6d %6d    %6d %6d %6d    %6d %6d %6d"),
+    PSTR("A: %6d %6d %6d    M: %6d %6d %6d    G: %6d %6d %6d"),
     lsm6.a.x, lsm6.a.y, lsm6.a.z,
     lis3mdl.m.x, lis3mdl.m.y, lis3mdl.m.z,
     lsm6.g.x, lsm6.g.y, lsm6.g.z);
