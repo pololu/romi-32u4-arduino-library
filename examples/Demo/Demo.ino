@@ -687,6 +687,8 @@ void setup()
     buzzer.playFromProgramSpace(beepWelcome);
   }
 
+  ledYellow(1);
+
   lcd.clear();
   lcd.print(F("  Romi"));
   lcd.gotoXY(2, 1);
@@ -712,6 +714,8 @@ void setup()
   lcd.print(F("-try it!"));
 
   while (buttonMonitor() != 'B'){}
+
+  ledYellow(0);
 
   buzzer.playFromProgramSpace(beepThankYou);
   lcd.clear();
