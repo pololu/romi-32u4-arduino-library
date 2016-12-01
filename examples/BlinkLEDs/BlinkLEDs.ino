@@ -1,7 +1,6 @@
-/* This example shows how to blink the three user LEDs
-on the Romi 32U4. */
+// This example shows how to blink the three user LEDs on the
+// Romi 32U4.
 
-#include <Wire.h>
 #include <Romi32U4.h>
 
 void setup()

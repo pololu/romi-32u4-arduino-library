@@ -1,8 +1,7 @@
-/* This example demonstrates basic use of the Romi 32U4 LCD.
-It prints the word "hi" on the first line of the LCD and
-prints the number 1234 on the second line. */
+// This example demonstrates basic use of the Romi 32U4 LCD.  It
+// prints the word "hi" on the first line of the LCD and prints
+// the number 1234 on the second line.
 
-#include <Wire.h>
 #include <Romi32U4.h>
 
 Romi32U4LCD lcd;

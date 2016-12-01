@@ -1,25 +1,23 @@
-/* This example shows how to:
+// This example shows how to:
+//
+// - Measure the voltage of the Romi's batteries.
+// - Detect whether USB power is present.
+//
+// The results are printed to the LCD and also to the serial
+// monitor.
+//
+// The battery voltage can only be read when the power switch is
+// in the "On" position.  If the power switch is off, the voltage
+// reading displayed by this demo will be low, but it might not
+// be zero because the Romi 32U4 has capacitors that take a while
+// to discharge.
 
-- Measure the voltage of the Romi's batteries.
-- Detect whether USB power is present.
-
-The results are printed to the LCD and also to the serial
-monitor.
-
-The battery voltage can only be read when the power switch is in
-the "On" position.  If the power switch is off, the voltage
-reading displayed by this demo will be low, but it might not be
-zero because the Romi 32U4 has capacitors that take a while to
-discharge. */
-
-#include <Wire.h>
 #include <Romi32U4.h>
 
 Romi32U4LCD lcd;
 
 void setup()
 {
-
 }
 
 void loop()

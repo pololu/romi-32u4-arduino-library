@@ -1,7 +1,6 @@
 // This example demonstrates three different ways to
 // interface with a user pushbutton on the Romi 32U4.
 
-#include <Wire.h>
 #include <Romi32U4.h>
 
 // These objects provide access to the Romi 32U4's

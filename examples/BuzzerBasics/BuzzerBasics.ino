@@ -1,17 +1,16 @@
-/* This example shows how to make sounds with the buzzer on the
-Romi 32U4.
+// This example shows how to make sounds with the buzzer on the
+// Romi 32U4.
+//
+// This example demonstrates the use of the playFrequency(),
+// playNote(), and playFromProgramSpace() functions, which play
+// entirely in the background, requiring no further action from
+// the user once the function is called.  The CPU is then free to
+// execute other code while the buzzer plays.
+//
+// This example also shows how to use the stopPlaying() function
+// to stop the buzzer, and it shows how to use the isPlaying()
+// function to tell whether the buzzer is still playing or not.
 
-This example demonstrates the use of the playFrequency(),
-playNote(), and playFromProgramSpace() functions, which play
-entirely in the background, requiring no further action from the
-user once the function is called.  The CPU is then free to
-execute other code while the buzzer plays.
-
-This example also shows how to use the stopPlaying() function to
-stop the buzzer, and it shows how to use the isPlaying() function
-to tell whether the buzzer is still playing or not. */
-
-#include <Wire.h>
 #include <Romi32U4.h>
 
 Romi32U4Buzzer buzzer;
