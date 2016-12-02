@@ -29,8 +29,8 @@
 #include <LSM6.h>
 #include <LIS3MDL.h>
 
-LSM6 lsm6;
-LIS3MDL lis3mdl;
+LSM6 imu;
+LIS3MDL mag;
 
 char report[120];
 
@@ -38,7 +38,7 @@ void setup()
 {
   Wire.begin();
 
-  if (!lis3mdl.init())
+  if (!mag.init())
   {
     // Failed to detect the LIS3MDL.
     ledRed(1);
@@ -49,9 +49,9 @@ void setup()
     }
   }
 
-  lis3mdl.enableDefault();
+  mag.enableDefault();
 
-  if (!lsm6.init())
+  if (!imu.init())
   {
     // Failed to detect the LSM6.
     ledRed(1);
@@ -62,27 +62,27 @@ void setup()
     }
   }
 
-  lsm6.enableDefault();
+  imu.enableDefault();
 
   // Set the gyro full scale to 1000 dps because the default
   // value is too low, and leave the other settings the same.
-  lsm6.writeReg(LSM6::CTRL2_G, 0b10001000);
+  imu.writeReg(LSM6::CTRL2_G, 0b10001000);
 
   // Set the accelerometer full scale to 16 g because the default
   // value is too low, and leave the other settings the same.
-  lsm6.writeReg(LSM6::CTRL1_XL, 0b10000100);
+  imu.writeReg(LSM6::CTRL1_XL, 0b10000100);
 }
 
 void loop()
 {
-  lsm6.read();
-  lis3mdl.read();
+  imu.read();
+  mag.read();
 
   snprintf_P(report, sizeof(report),
     PSTR("A: %6d %6d %6d    M: %6d %6d %6d    G: %6d %6d %6d"),
-    lsm6.a.x, lsm6.a.y, lsm6.a.z,
-    lis3mdl.m.x, lis3mdl.m.y, lis3mdl.m.z,
-    lsm6.g.x, lsm6.g.y, lsm6.g.z);
+    imu.a.x, imu.a.y, imu.a.z,
+    mag.m.x, mag.m.y, mag.m.z,
+    imu.g.x, imu.g.y, imu.g.z);
   Serial.println(report);
 
   delay(100);

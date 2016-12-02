@@ -315,6 +315,14 @@ void initInertialSensors()
   imu.enableDefault();
   mag.init();
   mag.enableDefault();
+
+  // Set the gyro full scale to 1000 dps because the default
+  // value is too low, and leave the other settings the same.
+  imu.writeReg(LSM6::CTRL2_G, 0b10001000);
+
+  // Set the accelerometer full scale to 16 g because the default
+  // value is too low, and leave the other settings the same.
+  imu.writeReg(LSM6::CTRL1_XL, 0b10000100);
 }
 
 // Given 3 readings for axes x, y, and z, prints the sign

@@ -24,18 +24,26 @@
 
 const int16_t maxSpeed = 150;
 
-LSM6 lsm6;
 Romi32U4Motors motors;
 Romi32U4LCD lcd;
 Romi32U4ButtonA buttonA;
 Romi32U4Encoders encoders;
+LSM6 imu;
 
 void setup()
 {
   // Start I2C and initialize the LSM6 accelerometer/gyro.
   Wire.begin();
-  lsm6.init();
-  lsm6.enableDefault();
+  imu.init();
+  imu.enableDefault();
+
+  // Set the gyro full scale to 1000 dps because the default
+  // value is too low, and leave the other settings the same.
+  imu.writeReg(LSM6::CTRL2_G, 0b10001000);
+
+  // Set the accelerometer full scale to 16 g because the default
+  // value is too low, and leave the other settings the same.
+  imu.writeReg(LSM6::CTRL1_XL, 0b10000100);
 
   lcd.clear();
   lcd.print(F("Press A"));
@@ -45,11 +53,11 @@ void setup()
 
 void loop()
 {
-  // Read the acceleration from the LSM303.
-  // A value of 16384 corresponds to approximately 1 g.
-  lsm6.read();
-  int16_t x = lsm6.a.x;
-  int16_t y = lsm6.a.y;
+  // Read the acceleration from the LSM6DS33.
+  // A value of 2048 corresponds to approximately 1 g.
+  imu.read();
+  int16_t x = imu.a.x;
+  int16_t y = imu.a.y;
   int32_t magnitudeSquared = (int32_t)x * x + (int32_t)y * y;
 
   // Display the X and Y acceleration values on the LCD
@@ -74,13 +82,13 @@ void loop()
   forwardSpeed = constrain(forwardSpeed, -maxSpeed, maxSpeed);
 
   // See if we are actually on an incline.
-  // 16384 * sin(5 deg) = 1427
+  // 2048 * sin(5 deg) = 1427
   int16_t turnSpeed;
-  if (magnitudeSquared > (int32_t)1427 * 1427)
+  if (magnitudeSquared > (int32_t)178 * 178)
   {
     // We are on an incline of more than 5 degrees, so
     // try to face uphill using a feedback algorithm.
-    turnSpeed = y / 16;
+    turnSpeed = y / 2;
     ledYellow(1);
   }
   else
