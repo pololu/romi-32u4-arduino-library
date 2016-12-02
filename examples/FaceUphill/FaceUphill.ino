@@ -82,7 +82,7 @@ void loop()
   forwardSpeed = constrain(forwardSpeed, -maxSpeed, maxSpeed);
 
   // See if we are actually on an incline.
-  // 2048 * sin(5 deg) = 1427
+  // 2048 * sin(5 deg) = 178
   int16_t turnSpeed;
   if (magnitudeSquared > (int32_t)178 * 178)
   {
