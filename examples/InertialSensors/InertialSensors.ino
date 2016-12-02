@@ -4,15 +4,15 @@
 //
 // The accelerometer readings can be converted to units of g using
 // the conversion factors specified in the "Mechanical characteristics"
-// table in the LSM6DS33 datasheet.  The default full-scale (FS)
-// setting is +/- 2 g, so the conversion factor is 0.061 mg/LSB
-// (least-significant bit).  A raw reading of 16384 would correspond
+// table in the LSM6DS33 datasheet.  We use a full scale (FS)
+// setting of +/- 16 g, so the conversion factor is 0.488 mg/LSB
+// (least-significant bit).  A raw reading of 2048 would correspond
 // to 1 g.
 //
 // The gyro readings can be converted to degrees per second (dps)
 // using the "Mechanical characteristics" table in the LSM6DS33
-// datasheet.  The default full-scale (FS) +/- 245 dps so the
-// conversion factor is 8.75 mdps/LSB.  A raw reading of 10285
+// datasheet.  We use a full scale (FS) of +/- 1000 dps so the
+// conversion factor is 35 mdps/LSB.  A raw reading of 2571
 // would correspond to 90 dps.
 //
 // The magnetometer readings are more difficult to interpret and
@@ -63,6 +63,14 @@ void setup()
   }
 
   lsm6.enableDefault();
+
+  // Set the gyro full scale to 1000 dps because the default
+  // value is too low, and leave the other settings the same.
+  lsm6.writeReg(LSM6::CTRL2_G, 0b10001000);
+
+  // Set the accelerometer full scale to 16 g because the default
+  // value is too low, and leave the other settings the same.
+  lsm6.writeReg(LSM6::CTRL1_XL, 0b10000100);
 }
 
 void loop()
