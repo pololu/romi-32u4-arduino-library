@@ -32,7 +32,7 @@ Romi32U4Encoders encoders;
 char buttonMonitor();
 
 // A couple of simple tunes, stored in program space.
-const char beepBrownout[] PROGMEM = "<c32<e32#<g32";
+const char beepBrownout[] PROGMEM = "<c8";
 const char beepWelcome[] PROGMEM = ">g32>>c32";
 const char beepThankYou[] PROGMEM = ">>c32>g32";
 const char beepButtonA[] PROGMEM = "!c32";
