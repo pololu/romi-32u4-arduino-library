@@ -21,7 +21,7 @@
 uint32_t turnAngle = 0;
 
 // turnRate is the current angular rate of the gyro, in units of
-// 0.07 degrees per second.
+// 0.035 degrees per second.
 int16_t turnRate;
 
 // This is the average reading obtained from the gyro's Z axis

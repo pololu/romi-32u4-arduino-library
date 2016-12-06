@@ -61,9 +61,9 @@ void loop()
 
   // Calculate the motor turn speed using proportional and
   // derivative PID terms.  Here we are a using a proportional
-  // constant of 56 and a derivative constant of 1/20.
-  int32_t turnSpeed = -(int32_t)turnAngle / (turnAngle1 / 56)
-    - turnRate / 20;
+  // constant of 15 and a derivative constant of 1/73.
+  int32_t turnSpeed = -(int32_t)turnAngle / (turnAngle1 / 15)
+    - turnRate / 73;
 
   // Constrain our motor speeds to be between
   // -maxSpeed and maxSpeed.
