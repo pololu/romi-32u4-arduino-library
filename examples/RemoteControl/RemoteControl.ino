@@ -63,9 +63,23 @@ Romi32U4ButtonA buttonA;
 
 RemoteDecoder decoder;
 
+// Initializes the IR sesnor by enabling a pull-up resistor for
+// it.
+void irSensorInit()
+{
+  FastGPIO::Pin<0>::setInputPulledUp();
+}
+
+// Reads from the IR sensor.  If the pin is low then the sensor
+// is detecting something and this function returns true.
+bool irSensorRead()
+{
+  return !FastGPIO::Pin<0>::isInputHigh();
+}
+
 void setup()
 {
-  decoder.init();
+  irSensorInit();
 
   lcd.clear();
   lcd.print(F("Waiting"));
@@ -73,7 +87,7 @@ void setup()
 
 void loop()
 {
-  decoder.service();
+  decoder.service(irSensorRead());
 
   // Turn on the yellow LED if a message is active.
   ledYellow(messageActive);

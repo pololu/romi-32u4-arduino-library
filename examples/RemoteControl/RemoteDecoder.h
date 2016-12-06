@@ -1,6 +1,7 @@
 #pragma once
 
-#include <Romi32U4.h>
+#include <Arduino.h>
+#include <stdint.h>
 
 // Uncomment the line below to enable debugging output that
 // gets sent to the serial monitor.
@@ -44,15 +45,6 @@ public:
   RemoteDecoder()
   {
     memset(message, 0, messageSize);
-  }
-
-  void init()
-  {
-    // Enable pull-up resistors on all the sensor inputs.
-    //
-    // This is code you should change if you want to put the IR
-    // decoder on another input.
-    FastGPIO::Pin<0>::setInputPulledUp();
   }
 
   // If false, then it is OK for other parts of the code to do blocking
@@ -117,8 +109,11 @@ public:
   }
 
   // This should be called as often as possible to monitor the
-  // remote.
-  void service()
+  // remote.  The caller should read the state of the IR sensor
+  // and pass it in as the first argument.  The first argument
+  // should be 1 if the sensor is actively detecting
+  // something and 0 otherwise.
+  void service(bool pulseOn)
   {
     // First, get the number of time units that have elapsed
     // in the current state.
@@ -129,7 +124,7 @@ public:
       // Init is the initial state, and also the state used after
       // there are any errors.  Just wait for the signal to turn
       // off and then go to the idle state.
-      if (!pulseOn())
+      if (!pulseOn)
       {
         changeState(Idle);
       }
@@ -138,7 +133,7 @@ public:
     case Idle:
       // The sensors are off and we are waiting for the next
       // command.
-      if (pulseOn())
+      if (pulseOn)
       {
         changeState(StartMark);
       }
@@ -155,7 +150,7 @@ public:
         #endif
         error();
       }
-      else if (!pulseOn())
+      else if (!pulseOn)
       {
         // We allow the start mark to be as short as 2.5 time
         // units, because it is possible that the AVR might be
@@ -194,7 +189,7 @@ public:
         #endif
         error();
       }
-      else if (pulseOn())
+      else if (pulseOn)
       {
         if (time == 4)
         {
@@ -234,7 +229,7 @@ public:
         #endif
         error();
       }
-      else if (!pulseOn())
+      else if (!pulseOn)
       {
         if (time == 1)
         {
@@ -263,7 +258,7 @@ public:
         #endif
         error();
       }
-      else if (pulseOn())
+      else if (pulseOn)
       {
         if (time == 1)
         {
@@ -305,7 +300,7 @@ public:
         #endif
         error();
       }
-      else if (!pulseOn())
+      else if (!pulseOn)
       {
         if (time == 1)
         {
@@ -406,16 +401,6 @@ private:
   {
     return (timeInThisStateUs() + unitPulseTimeUs / 2) / unitPulseTimeUs;
   }
-
-  // Returns true if the IR receiver output is active, which
-  // indicates that a 38 kHz IR signal is detected.  This is the
-  // code you should change if you want to use an IR receiver on
-  // a different pin.
-  bool pulseOn()
-  {
-    return !FastGPIO::Pin<0>::isInputHigh();
-  }
-
 
   /** High-level state variables ********/
 
