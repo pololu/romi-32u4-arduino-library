@@ -1,14 +1,15 @@
 # Romi32U4 library
 
 Version: 1.0.0<br/>
-Release date:<br/>
+Release date: 2017-02-03<br/>
 [![Build Status](https://travis-ci.org/pololu/romi-32u4-arduino-library.svg?branch=master)](https://travis-ci.org/pololu/romi-32u4-arduino-library)<br/>
+[www.pololu.com](https://www.pololu.com/)
 
 ## Summary
 
-This is a C++ library for the Arduino IDE that helps access the on-board hardware of the Romi 32U4 robot.
+This is a C++ library for the Arduino IDE that helps access the on-board hardware of the [Romi 32U4 Control Board](https://www.pololu.com/product/3544).
 
-The Romi 32U4 robot consists of the Romi chassis and the Romi 32U4 controller board.  It has an integrated AVR ATmega32U4 microcontroller, motor drivers, encoders, buzzer, buttons, LSM6DS33 accelerometer and gyro, and an LIS3MDL magnetometer.
+The Romi 32U4 Control Board turns the Romi chassis into a programmable robot based on the Arduino-compatible ATmega32U4 MCU.  It has an integrated AVR ATmega32U4 microcontroller, motor drivers, encoders, buzzer, buttons, LSM6DS33 accelerometer and gyro, and an LIS3MDL magnetometer.
 
 This library does not include code for accessing the LSM6DS33 or LIS3MDL.  If you want to access those, you should install the separate [LSM6 library](https://github.com/pololu/lsm6-arduino) and [LIS3MDL library](https://github.com/pololu/lis3mdl-arduino).
 
@@ -76,4 +77,4 @@ For complete documentation, see https://pololu.github.io/romi-32u4-arduino-libra
 
 ## Version history
 
-* 1.0.0: Original release.
+* 1.0.0 (2017-02-03): Original release.
