@@ -9,9 +9,9 @@ Release date: 2017-02-03<br/>
 
 This is a C++ library for the Arduino IDE that helps access the on-board hardware of the [Romi 32U4 Control Board](https://www.pololu.com/product/3544).
 
-The Romi 32U4 Control Board turns the Romi chassis into a programmable robot based on the Arduino-compatible ATmega32U4 MCU.  It has an integrated AVR ATmega32U4 microcontroller, motor drivers, encoders, buzzer, buttons, LSM6DS33 accelerometer and gyro, and an LIS3MDL magnetometer.
+The Romi 32U4 Control Board turns the Romi chassis into a programmable robot based on the Arduino-compatible ATmega32U4 MCU.  It has an integrated AVR ATmega32U4 microcontroller, motor drivers, encoders, buzzer, buttons, and an LSM6DS33 accelerometer and gyro.
 
-This library does not include code for accessing the LSM6DS33 or LIS3MDL.  If you want to access those, you should install the separate [LSM6 library](https://github.com/pololu/lsm6-arduino) and [LIS3MDL library](https://github.com/pololu/lis3mdl-arduino).
+This library does not include code for accessing the LSM6DS33.  If you want to access it, you should install the separate [LSM6 library](https://github.com/pololu/lsm6-arduino).
 
 This library is very similar to the [Zumo32U4](https://github.com/pololu/zumo-32u4-arduino-library) library.
 
