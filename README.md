@@ -77,4 +77,4 @@ For complete documentation, see https://pololu.github.io/romi-32u4-arduino-libra
 
 ## Version history
 
-* 1.0.0 (2017-02-03): Original release.
+* 1.0.0 (2017-02-06): Original release.
