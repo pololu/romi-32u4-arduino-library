@@ -91,7 +91,7 @@ class Romi32U4Motors
 
     static void init2();
 
-    static uint16_t maxSpeed;
+    static int16_t maxSpeed;
     static bool flipLeft;
     static bool flipRight;
 };
