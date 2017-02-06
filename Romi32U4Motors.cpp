@@ -12,7 +12,7 @@
 bool Romi32U4Motors::flipLeft = false;
 bool Romi32U4Motors::flipRight = false;
 
-uint16_t Romi32U4Motors::maxSpeed = 300;
+int16_t Romi32U4Motors::maxSpeed = 300;
 
 // initialize timer1 to generate the proper PWM outputs to the motor drivers
 void Romi32U4Motors::init2()
