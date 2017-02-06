@@ -608,7 +608,7 @@ Menu::Item mainMenuItems[] = {
   { "Music", musicDemo },
   { "Power", powerDemo },
 };
-Menu mainMenu(mainMenuItems, 7);
+Menu mainMenu(mainMenuItems, 6);
 
 // This function watches for button presses.  If a button is
 // pressed, it beeps a corresponding beep and it returns 'A',
