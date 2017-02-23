@@ -1,7 +1,7 @@
 # Romi32U4 library
 
-Version: 1.0.0<br/>
-Release date: 2017-02-06<br/>
+Version: 1.0.1<br/>
+Release date: 2017-02-23<br/>
 [![Build Status](https://travis-ci.org/pololu/romi-32u4-arduino-library.svg?branch=master)](https://travis-ci.org/pololu/romi-32u4-arduino-library)<br/>
 [www.pololu.com](https://www.pololu.com/)
 
@@ -77,4 +77,8 @@ For complete documentation, see https://pololu.github.io/romi-32u4-arduino-libra
 
 ## Version history
 
+* 1.0.1 (2017-02-23):
+  * Changed the internal `Romi32U4Motors::maxSpeed` variable to be an `int16_t` so it can be compared to other `int16_t` variables without warnings.
+  * Fixed the InterialSensors and Demo examples to not use a compass.
+  * Fixed some comments.
 * 1.0.0 (2017-02-06): Original release.
