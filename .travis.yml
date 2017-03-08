@@ -12,6 +12,7 @@ env:
 - BOARD=leonardo
 
 script:
-- for e in examples/*; do
+- set -eo pipefail;
+  for e in examples/*; do
     platformio ci --board=$BOARD --lib=. --lib="/tmp/lsm6-arduino-master/" $e/*;
   done
