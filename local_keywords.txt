@@ -15,6 +15,7 @@ flipRightMotor	KEYWORD2
 setLeftSpeed	KEYWORD2
 setRightSpeed	KEYWORD2
 setSpeeds	KEYWORD2
+allowTurbo	KEYWORD2
 
 Romi32U4Encoders	KEYWORD1
 init	KEYWORD2
