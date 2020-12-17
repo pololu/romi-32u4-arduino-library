@@ -1,0 +1,4 @@
+only_boards:
+  - arduino:avr:leonardo
+library_archives:
+  - LSM6=https://github.com/pololu/lsm6-arduino/archive/1.0.0.tar.gz=046cw10nv6cr8624f6j2rw5kf5cazrb9n8sda92m0n2971zc3k48
