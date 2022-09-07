@@ -1,7 +1,5 @@
 # Romi32U4 library
 
-Version: 1.0.2<br/>
-Release date: 2017-07-17<br/>
 [www.pololu.com](https://www.pololu.com/)
 
 ## Summary
@@ -76,6 +74,7 @@ For complete documentation, see https://pololu.github.io/romi-32u4-arduino-libra
 
 ## Version history
 
+* 1.0.3 (2022-09-06): Fixed a bug in the Encoders demo that could prevent encoder errors from being shown properly on the display.
 * 1.0.2 (2017-07-17): Fixed a bug that caused errors for the right encoder to be reported as errors for the left encoder.
 * 1.0.1 (2017-02-23):
   * Changed the internal `Romi32U4Motors::maxSpeed` variable to be an `int16_t` so it can be compared to other `int16_t` variables without warnings.
